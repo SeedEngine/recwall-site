@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECWALL — Guitar-Driven Melodic Hard Rock</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --red:#B22222;
+  --bg:#0a0a0a;
+  --bg2:#0f0f0f;
+  --bg3:#111;
+  --border:#1f1f1f;
+  --text:#e0e0e0;
+  --muted:#888;
+  --dim:#555;
+  --mono:'IBM Plex Mono',monospace;
+  --serif:'Source Serif 4',serif;
+  --display:'Bebas Neue',sans-serif;
+}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--text);font-family:var(--serif);font-weight:300;}
+a{text-decoration:none;color:inherit;}
+
+/* NAV */
+nav{display:flex;align-items:center;justify-content:space-between;padding:20px 48px;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:100;}
+.nav-logo{font-family:var(--display);font-size:28px;letter-spacing:6px;color:var(--text);}
+.nav-links{display:flex;gap:36px;}
+.nav-links a{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;transition:color .2s;}
+.nav-links a:hover{color:var(--red);}
+
+/* HERO */
+.hero{display:grid;grid-template-columns:1fr 1fr;min-height:580px;}
+.hero-img{overflow:hidden;position:relative;}
+.hero-img img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(15%) contrast(1.1);opacity:.88;display:block;}
+.hero-text{padding:64px 56px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--border);background:var(--bg);}
+.hero-label{font-family:var(--mono);font-size:10px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:20px;}
+.hero-title{font-family:var(--display);font-size:80px;line-height:.9;letter-spacing:4px;color:var(--text);margin-bottom:20px;}
+.hero-sub{font-size:15px;line-height:1.7;color:var(--muted);font-style:italic;margin-bottom:36px;}
+.cta-btn{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text);border:1px solid var(--red);padding:14px 28px;transition:background .2s;width:fit-content;}
+.cta-btn:hover{background:var(--red);}
+
+/* SECTIONS */
+section{border-top:1px solid var(--border);}
+.section-inner{padding:64px 48px;}
+.section-label{font-family:var(--mono);font-size:10px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:40px;}
+
+/* DISCOGRAPHY GRID */
+.disc-grid{display:grid;grid-template-columns:repeat(10,1fr);gap:10px;}
+.album-thumb{cursor:pointer;border:1px solid var(--border);transition:border-color .2s;position:relative;aspect-ratio:1;overflow:hidden;}
+.album-thumb:hover{border-color:var(--red);}
+.album-thumb.featured{border-color:var(--red);}
+.album-thumb img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .2s;}
+.album-thumb:hover img{opacity:.7;}
+.album-overlay{position:absolute;bottom:0;left:0;right:0;padding:8px;background:linear-gradient(transparent,rgba(0,0,0,.85));opacity:0;transition:opacity .2s;}
+.album-thumb:hover .album-overlay,.album-thumb.featured .album-overlay{opacity:1;}
+.album-thumb-title{font-family:var(--mono);font-size:9px;letter-spacing:1px;color:var(--text);text-transform:uppercase;}
+.album-thumb-year{font-family:var(--mono);font-size:8px;color:var(--dim);margin-top:2px;}
+
+/* ALBUM PAGE */
+.album-page{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:var(--bg);z-index:200;overflow-y:auto;}
+.album-page.active{display:block;}
+.album-page-inner{max-width:900px;margin:0 auto;padding:64px 48px;}
+.album-back{font-family:var(--mono);font-size:10px;letter-spacing:3px;color:var(--dim);text-transform:uppercase;cursor:pointer;margin-bottom:48px;display:inline-block;border:1px solid var(--border);padding:10px 20px;transition:color .2s,border-color .2s;}
+.album-back:hover{color:var(--text);border-color:var(--dim);}
+.album-layout{display:grid;grid-template-columns:280px 1fr;gap:56px;align-items:start;}
+.album-cover{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid var(--border);}
+.album-info{}
+.album-page-label{font-family:var(--mono);font-size:10px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:12px;}
+.album-page-title{font-family:var(--display);font-size:56px;letter-spacing:3px;color:var(--text);line-height:1;margin-bottom:4px;}
+.album-page-year{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:3px;margin-bottom:32px;}
+.tracklist{border-top:1px solid var(--border);margin-bottom:32px;}
+.track{display:flex;align-items:center;padding:12px 0;border-bottom:1px solid var(--border);}
+.track-num{font-family:var(--mono);font-size:10px;color:var(--red);min-width:28px;letter-spacing:1px;}
+.track-title{font-family:var(--mono);font-size:12px;color:var(--text);flex:1;letter-spacing:1px;}
+.track-duration{font-family:var(--mono);font-size:10px;color:var(--dim);}
+.album-listen{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--text);border:1px solid var(--red);padding:14px 28px;transition:background .2s;}
+.album-listen:hover{background:var(--red);}
+
+/* ABOUT */
+.about-grid{display:grid;grid-template-columns:320px 1fr;gap:56px;align-items:start;}
+.about-img{width:100%;object-fit:cover;border:1px solid var(--border);display:block;}
+.about-text{font-size:16px;line-height:1.85;color:var(--muted);}
+.about-text strong{color:var(--text);font-weight:400;}
+.about-text em{color:var(--text);font-style:italic;}
+.dsp-links{display:flex;gap:12px;flex-wrap:wrap;margin-top:36px;}
+.dsp-link{font-family:var(--mono);font-size:10px;letter-spacing:3px;text-transform:uppercase;color:var(--dim);border:1px solid var(--border);padding:10px 20px;transition:color .2s,border-color .2s;}
+.dsp-link:hover{color:var(--text);border-color:var(--dim);}
+
+/* BAND */
+.band-wrap{display:grid;grid-template-columns:1fr 1fr;}
+.band-img-wrap{overflow:hidden;}
+.band-img-wrap img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(15%);}
+.band-text{padding:56px;background:var(--bg2);border:1px solid var(--border);display:flex;flex-direction:column;justify-content:center;}
+.band-sub{font-size:14px;line-height:1.7;color:var(--dim);font-style:italic;margin-bottom:32px;}
+.members{border-top:1px solid var(--border);}
+.member{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px solid var(--border);}
+.member-name{font-family:var(--mono);font-size:12px;color:var(--text);letter-spacing:1px;}
+.member-role{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px;}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;}
+.footer-copy{font-family:var(--mono);font-size:10px;color:var(--dim);letter-spacing:2px;}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:16px 24px;}
+  .nav-links{gap:20px;}
+  .hero{grid-template-columns:1fr;}
+  .hero-img{height:340px;}
+  .hero-text{padding:40px 24px;}
+  .hero-title{font-size:56px;}
+  .section-inner{padding:48px 24px;}
+  .disc-grid{grid-template-columns:repeat(3,1fr);}
+  .about-grid{grid-template-columns:1fr;}
+  .band-wrap{grid-template-columns:1fr;}
+  .album-layout{grid-template-columns:1fr;}
+  .album-page-inner{padding:40px 24px;}
+  footer{padding:24px;flex-direction:column;gap:12px;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">RECWALL</div>
+  <div class="nav-links">
+    <a href="#music">Music</a>
+    <a href="#about">About</a>
+    <a href="#band">The Band</a>
+    <a href="https://recwall.bandcamp.com" target="_blank">Bandcamp</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-img">
+    <img src="images/RECWALL-Solo3.png" alt="RECWALL">
+  </div>
+  <div class="hero-text">
+    <div class="hero-label">Latest Release — 2025</div>
+    <div class="hero-title">SINGU-<br>LARITY</div>
+    <div class="hero-sub">Guitar-driven melodic hard rock.<br>Nine albums. Still burning.</div>
+    <a href="https://recwall.bandcamp.com/album/singularity-2" target="_blank" class="cta-btn">Listen on Bandcamp</a>
+  </div>
+</div>
+
+<!-- DISCOGRAPHY -->
+<section id="music">
+  <div class="section-inner">
+    <div class="section-label">Discography — 2017 to 2025</div>
+    <div class="disc-grid">
+      <div class="album-thumb" onclick="openAlbum('voices')"><img src="images/1%20RECWALL-Voices.jpg" alt="Voices"><div class="album-overlay"><div class="album-thumb-title">Voices</div><div class="album-thumb-year">2017</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('nomad')"><img src="images/2%20RECWALL-Nomad.jpg" alt="Nomad"><div class="album-overlay"><div class="album-thumb-title">Nomad</div><div class="album-thumb-year">2018</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('hz')"><img src="images/3%20RECWALL-432Hz.jpg" alt="432 Hz"><div class="album-overlay"><div class="album-thumb-title">432 Hz</div><div class="album-thumb-year">2019</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('simulation')"><img src="images/4%20RECWALL-Simulation.png" alt="Simulation"><div class="album-overlay"><div class="album-thumb-title">Simulation</div><div class="album-thumb-year">2020</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('stillhere')"><img src="images/6%20RECWALL-Still%20Here.png" alt="Still Here"><div class="album-overlay"><div class="album-thumb-title">Still Here</div><div class="album-thumb-year">2021</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('pathologic')"><img src="images/7%20RECWALL-Pathologic.jpg" alt="Pathologic"><div class="album-overlay"><div class="album-thumb-title">Pathologic</div><div class="album-thumb-year">2022</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('unplugged')"><img src="images/8RECWALL-Unplugged.png" alt="Unplugged"><div class="album-overlay"><div class="album-thumb-title">Unplugged</div><div class="album-thumb-year">2023</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('fadetogrey')"><img src="images/9%20RECWALL-Fade%20To%20Grey.png" alt="Fade to Grey"><div class="album-overlay"><div class="album-thumb-title">Fade to Grey</div><div class="album-thumb-year">2023</div></div></div>
+      <div class="album-thumb featured" onclick="openAlbum('singularity')"><img src="images/11%20RECWALL-Singularity.png" alt="Singularity"><div class="album-overlay"><div class="album-thumb-title">Singularity</div><div class="album-thumb-year">2025</div></div></div>
+      <div class="album-thumb" onclick="openAlbum('stasis')"><img src="images/10%20RECWALL-Stasis.png" alt="Stasis"><div class="album-overlay"><div class="album-thumb-title">Stasis</div><div class="album-thumb-year">2024</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label">About</div>
+    <div class="about-grid">
+      <img src="images/RECWALL-Solo3.png" alt="RECWALL" class="about-img">
+      <div>
+        <div class="about-text">
+          <strong>RECWALL</strong> is the project of singer-guitarist Robert Emmet Christopher Wall — guitar-driven melodic hard rock with deep roots in the 90s hard rock era. Wall's musical history runs from the NYC club scene through major label showcases with Zen Bender in the early 90s, through the hard rock outfit As It Iz, and into a prolific solo run that has produced nine albums since 2017. The most recent, <em>Singularity</em> (2025), is his most focused and deliberate work to date. Dave Bania on bass and Bob Lewis on drums round out the live unit, with guitarist and producer Trace Davis contributing to select recordings along the way.
+        </div>
+        <div class="dsp-links">
+          <a href="https://recwall.bandcamp.com" target="_blank" class="dsp-link">Bandcamp</a>
+          <a href="https://open.spotify.com/artist/5UANlrHA8fceoqKJO01aOr" target="_blank" class="dsp-link">Spotify</a>
+          <a href="https://music.apple.com/us/artist/recwall/1289911675" target="_blank" class="dsp-link">Apple Music</a>
+          <a href="https://www.facebook.com/profile.php?id=61574794290662" target="_blank" class="dsp-link">Facebook</a>
+          <a href="https://youtube.com/@recwall" target="_blank" class="dsp-link">YouTube</a>
+          <a href="https://recwall.bandcamp.com" target="_blank" class="dsp-link">Vinyl on Bandcamp</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BAND -->
+<section id="band">
+  <div class="band-wrap">
+    <div class="band-img-wrap">
+      <img src="images/RECWALL-band.jpg" alt="The Band">
+    </div>
+    <div class="band-text">
+      <div class="section-label">The Band</div>
+      <div class="band-sub">Central NJ. Sunday nights. Every week.</div>
+      <div class="members">
+        <div class="member"><span class="member-name">Christopher Wall</span><span class="member-role">Vocals / Guitar</span></div>
+        <div class="member"><span class="member-name">Dave Bania</span><span class="member-role">Bass</span></div>
+        <div class="member"><span class="member-name">Bob Lewis</span><span class="member-role">Drums</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2025 RECWALL — All Rights Reserved</div>
+  <div class="footer-copy">recwall.com</div>
+</footer>
+
+<!-- ALBUM PAGES -->
+<div id="album-voices" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/1%20RECWALL-Voices.jpg" alt="Voices" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">VOICES</div>
+        <div class="album-page-year">2017</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">Take My Chances</span><span class="track-duration">4:03</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">Groove Girl</span><span class="track-duration">3:22</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">So Far From Home</span><span class="track-duration">5:01</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Talk To Me</span><span class="track-duration">3:50</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Life & Time</span><span class="track-duration">5:05</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">Over Under</span><span class="track-duration">4:36</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Things Are Changing</span><span class="track-duration">4:17</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">Karen</span><span class="track-duration">3:56</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">Book Of Dreams</span><span class="track-duration">3:57</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Listen</span><span class="track-duration">4:15</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/voices" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-nomad" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/2%20RECWALL-Nomad.jpg" alt="Nomad" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">NOMAD</div>
+        <div class="album-page-year">2018</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">I'll Say</span><span class="track-duration">5:09</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">Just Can't Stop</span><span class="track-duration">4:51</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Somehow</span><span class="track-duration">3:53</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Nomad</span><span class="track-duration">5:46</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Dignify</span><span class="track-duration">6:43</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">Numb</span><span class="track-duration">4:02</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Seize the Day</span><span class="track-duration">4:45</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">Let Me Let You</span><span class="track-duration">5:01</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">Deeds</span><span class="track-duration">4:21</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Rescue Fee</span><span class="track-duration">4:40</span></div>
+          <div class="track"><span class="track-num">11</span><span class="track-title">Underneath</span><span class="track-duration">4:09</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/nomad" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-hz" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/3%20RECWALL-432Hz.jpg" alt="432 Hz" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">432 HZ</div>
+        <div class="album-page-year">2019</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">It's Your World</span><span class="track-duration">4:36</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">Waves</span><span class="track-duration">4:06</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Let It Breathe</span><span class="track-duration">3:51</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Let It Out</span><span class="track-duration">4:16</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Groove Girl (432Hz)</span><span class="track-duration">3:34</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">The Edge</span><span class="track-duration">3:47</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">She Says</span><span class="track-duration">4:11</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">Leap Of Faith</span><span class="track-duration">4:32</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">One</span><span class="track-duration">5:12</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Oversoul</span><span class="track-duration">4:31</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/432hz" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-simulation" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/4%20RECWALL-Simulation.png" alt="Simulation" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">SIMULATION</div>
+        <div class="album-page-year">2020</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">Drive</span><span class="track-duration">3:46</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">Away</span><span class="track-duration">3:42</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Stay In My Way</span><span class="track-duration">4:13</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Believe In You</span><span class="track-duration">3:08</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Sweet Sound & Fury</span><span class="track-duration">4:15</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">I Really Got It</span><span class="track-duration">3:26</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">This Too Shall Pass</span><span class="track-duration">4:29</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">Shape Shifter</span><span class="track-duration">4:02</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">No Place</span><span class="track-duration">4:20</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Walking In Your Shadow</span><span class="track-duration">4:17</span></div>
+          <div class="track"><span class="track-num">11</span><span class="track-title">Whisper In Your Ear</span><span class="track-duration">4:05</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/simulation" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-stillhere" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/6%20RECWALL-Still%20Here.png" alt="Still Here" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">STILL HERE</div>
+        <div class="album-page-year">2021</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">Thick And Thin</span><span class="track-duration">4:19</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">The Way</span><span class="track-duration">4:04</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Even</span><span class="track-duration">4:28</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Possibility</span><span class="track-duration">5:19</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Not Your Fight</span><span class="track-duration">3:30</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">Make It Through</span><span class="track-duration">3:56</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Will You Notice</span><span class="track-duration">3:33</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">Erase Me</span><span class="track-duration">3:56</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">Still Here</span><span class="track-duration">3:54</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Never Ending</span><span class="track-duration">3:49</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/still-here" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-pathologic" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/7%20RECWALL-Pathologic.jpg" alt="Pathologic" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">PATHOLOGIC</div>
+        <div class="album-page-year">2022</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">Dust</span><span class="track-duration">4:31</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">Beautiful</span><span class="track-duration">4:22</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Uninvited</span><span class="track-duration">4:26</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Gone</span><span class="track-duration">5:10</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Pathologic</span><span class="track-duration">3:57</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">Graces</span><span class="track-duration">4:33</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Push</span><span class="track-duration">3:48</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">A Breath Away</span><span class="track-duration">3:57</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">Spark</span><span class="track-duration">4:10</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Unsaid (bonus)</span><span class="track-duration">3:05</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/pathologic" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-unplugged" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/8RECWALL-Unplugged.png" alt="Unplugged" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">UNPLUGGED</div>
+        <div class="album-page-year">2023</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">It's Your World</span><span class="track-duration">2:29</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">She Says</span><span class="track-duration">2:47</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Away</span><span class="track-duration">2:48</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Drifted</span><span class="track-duration">2:51</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Spark</span><span class="track-duration">3:26</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">In Plain Sight</span><span class="track-duration">2:50</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Stay In My Way</span><span class="track-duration">2:32</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">Nomad</span><span class="track-duration">3:50</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">This Too Shall Pass</span><span class="track-duration">2:53</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">No Place</span><span class="track-duration">3:06</span></div>
+          <div class="track"><span class="track-num">11</span><span class="track-title">The Edge</span><span class="track-duration">3:36</span></div>
+          <div class="track"><span class="track-num">12</span><span class="track-title">Whisper In Your Ear</span><span class="track-duration">3:09</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/unplugged" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-fadetogrey" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/9%20RECWALL-Fade%20To%20Grey.png" alt="Fade to Grey" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">FADE TO GREY</div>
+        <div class="album-page-year">2023</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">I'll Say</span><span class="track-duration">4:43</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">On My Way Out</span><span class="track-duration">3:48</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Fade To Grey</span><span class="track-duration">3:56</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Something New</span><span class="track-duration">3:42</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Birds & The Bees</span><span class="track-duration">3:08</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">Black River</span><span class="track-duration">4:09</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Turn It Around</span><span class="track-duration">4:03</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">One & Only</span><span class="track-duration">3:34</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">Nomad</span><span class="track-duration">5:00</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Fade Me Out</span><span class="track-duration">3:18</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/fade-to-grey-album" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="album-stasis" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/10%20RECWALL-Stasis.png" alt="Stasis" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">STASIS</div>
+        <div class="album-page-year">2024</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">Immunity</span><span class="track-duration">3:18</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">Away (2024)</span><span class="track-duration">4:13</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Stasis</span><span class="track-duration">3:49</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Dignify</span><span class="track-duration">6:48</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">The Marrow</span><span class="track-duration">3:43</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">Anymore</span><span class="track-duration">4:01</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Somehow (2024)</span><span class="track-duration">3:16</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">A Good Place</span><span class="track-duration">3:24</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">Forgiven</span><span class="track-duration">3:12</span></div>
+          <div class="track"><span class="track-num">10</span><span class="track-title">Holding On</span><span class="track-duration">3:37</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/stasis" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SINGULARITY — no separate page entry in grid, but linked from hero -->
+<div id="album-singularity" class="album-page">
+  <div class="album-page-inner">
+    <div class="album-back" onclick="closeAlbum()">← Back</div>
+    <div class="album-layout">
+      <img src="images/11%20RECWALL-Singularity.png" alt="Singularity" class="album-cover">
+      <div class="album-info">
+        <div class="album-page-label">RECWALL</div>
+        <div class="album-page-title">SINGULARITY</div>
+        <div class="album-page-year">2025</div>
+        <div class="tracklist">
+          <div class="track"><span class="track-num">01</span><span class="track-title">Dystopia</span><span class="track-duration">4:17</span></div>
+          <div class="track"><span class="track-num">02</span><span class="track-title">Open</span><span class="track-duration">3:31</span></div>
+          <div class="track"><span class="track-num">03</span><span class="track-title">Seed</span><span class="track-duration">3:19</span></div>
+          <div class="track"><span class="track-num">04</span><span class="track-title">Remember</span><span class="track-duration">4:11</span></div>
+          <div class="track"><span class="track-num">05</span><span class="track-title">Home</span><span class="track-duration">3:29</span></div>
+          <div class="track"><span class="track-num">06</span><span class="track-title">Threshold</span><span class="track-duration">4:16</span></div>
+          <div class="track"><span class="track-num">07</span><span class="track-title">Horizon</span><span class="track-duration">3:31</span></div>
+          <div class="track"><span class="track-num">08</span><span class="track-title">Antidote</span><span class="track-duration">4:23</span></div>
+          <div class="track"><span class="track-num">09</span><span class="track-title">Stillwatcher</span><span class="track-duration">4:44</span></div>
+        </div>
+        <a href="https://recwall.bandcamp.com/album/singularity-2" target="_blank" class="album-listen">Listen on Bandcamp</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+function openAlbum(id){
+  document.querySelectorAll('.album-page').forEach(p=>p.classList.remove('active'));
+  var el=document.getElementById('album-'+id);
+  if(el){el.classList.add('active');el.scrollTop=0;document.body.style.overflow='hidden';}
+}
+function closeAlbum(){
+  document.querySelectorAll('.album-page').forEach(p=>p.classList.remove('active'));
+  document.body.style.overflow='';
+}
+document.querySelectorAll('.hero-text .cta-btn').forEach(function(btn){
+  btn.addEventListener('click',function(e){
+    if(btn.getAttribute('href').includes('bandcamp'))return;
+    e.preventDefault();openAlbum('singularity');
+  });
+});
+</script>
+</body>
+</html>
