@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" type="image/png" href="images/RECWALL-Logo.png">
 <title>RECWALL — Guitar-Driven Melodic Hard Rock</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -34,7 +35,7 @@ nav{display:flex;align-items:center;justify-content:space-between;padding:20px 4
 
 /* HERO */
 .hero{display:grid;grid-template-columns:1fr 1fr;min-height:580px;}
-.hero-img{overflow:hidden;position:relative;}
+.hero-img{overflow:hidden;position:relative;padding:24px 24px 0 24px;background:var(--bg);}
 .hero-img img{width:100%;height:100%;object-fit:cover;object-position:center top;filter:grayscale(15%) contrast(1.1);opacity:.88;display:block;}
 .hero-text{padding:64px 56px;display:flex;flex-direction:column;justify-content:center;border-left:1px solid var(--border);background:var(--bg);}
 .hero-label{font-family:var(--mono);font-size:10px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:20px;}
@@ -210,6 +211,22 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify
   </div>
 </section>
 
+
+<section style="border-top:1px solid var(--border);padding:64px 48px;background:var(--bg2);">
+  <div style="max-width:480px;margin:0 auto;text-align:center;">
+    <div style="font-family:var(--mono);font-size:10px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:16px;">Mailing List</div>
+    <div style="font-family:var(--display);font-size:32px;letter-spacing:4px;color:var(--text);margin-bottom:8px;">STAY CONNECTED</div>
+    <div style="font-family:var(--serif);font-size:14px;color:var(--muted);margin-bottom:36px;font-style:italic;">New releases, shows, and transmissions.</div>
+    <form action="https://google.us21.list-manage.com/subscribe/post?u=3d259b8a256a1e277551dffa7&amp;id=bb4dc186d2&amp;f_id=00f7e5e1f0" method="post" target="_blank" style="display:flex;flex-direction:column;gap:12px;">
+      <input type="text" name="FNAME" placeholder="FIRST NAME" style="background:#000;border:none;border-bottom:1px solid var(--border);color:var(--text);padding:14px;font-family:var(--mono);font-size:11px;letter-spacing:2px;outline:none;">
+      <input type="email" name="EMAIL" placeholder="EMAIL ADDRESS" required style="background:#000;border:none;border-bottom:1px solid var(--border);color:var(--text);padding:14px;font-family:var(--mono);font-size:11px;letter-spacing:2px;outline:none;">
+      <div style="position:absolute;left:-5000px;" aria-hidden="true">
+        <input type="text" name="b_3d259b8a256a1e277551dffa7_bb4dc186d2" tabindex="-1" value="">
+      </div>
+      <button type="submit" style="background:var(--red);border:none;color:var(--text);font-family:var(--mono);font-size:11px;letter-spacing:4px;padding:16px;cursor:pointer;text-transform:uppercase;margin-top:8px;">SUBSCRIBE</button>
+    </form>
+  </div>
+</section>
 <footer>
   <div class="footer-copy">© 2025 RECWALL — All Rights Reserved</div>
   <div class="footer-copy">recwall.com</div>
