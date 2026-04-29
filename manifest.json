@@ -1,0 +1,21 @@
+{
+  "name": "RECWALL",
+  "short_name": "RECWALL",
+  "description": "Guitar-driven melodic hard rock",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#0a0a0a",
+  "icons": [
+    {
+      "src": "images/RECWALL-Logo.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "images/RECWALL-Logo.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
