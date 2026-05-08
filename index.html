@@ -168,7 +168,11 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify
     <div class="hero-title" style="font-size:64px;margin-bottom:20px;">SINGULARITY</div>
     <img src="images/11%20RECWALL-Singularity.png" alt="Singularity" style="width:140px;height:140px;object-fit:cover;border:1px solid #1f1f1f;margin-bottom:24px;display:block;">
     <div class="hero-sub">Guitar-driven melodic hard rock.<br>Ten albums. Still burning.</div>
-    <a href="https://recwall.bandcamp.com/album/singularity-2" target="_blank" class="cta-btn">Listen on Bandcamp</a>
+    <div style="display:flex;flex-direction:column;gap:10px;align-items:flex-start;">
+      <a href="https://recwall.bandcamp.com/album/singularity-2" target="_blank" class="cta-btn">Listen on Bandcamp</a>
+      <a href="https://open.spotify.com/album/0FRPtEgBoRqQ2sWto5xtoX" target="_blank" class="cta-btn" style="border-color:var(--border);color:var(--dim);">Listen on Spotify</a>
+      <a href="https://music.apple.com/us/album/singularity/1822840903" target="_blank" class="cta-btn" style="border-color:var(--border);color:var(--dim);">Listen on Apple Music</a>
+    </div>
   </div>
 </div>
 
@@ -250,7 +254,7 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify
 
 <footer>
   <div class="footer-copy">© 2025 RECWALL — All Rights Reserved</div>
-  <div class="footer-copy">recwall.com</div>
+  <div class="footer-copy" id="visit-trigger" style="cursor:pointer;position:relative;">recwall.com<span id="visit-popover" style="display:none;position:absolute;bottom:24px;right:0;background:#111;border:1px solid #1f1f1f;padding:8px 14px;font-family:IBM Plex Mono,monospace;font-size:10px;color:#555;letter-spacing:2px;white-space:nowrap;"></span></div>
 </footer>
 
 <!-- ALBUM PAGES -->
@@ -619,6 +623,28 @@ function closeAlbum(){
   document.querySelectorAll('.album-page').forEach(p=>p.classList.remove('active'));
   document.body.style.overflow='';
 }
+// VISITOR COUNTER EASTER EGG
+var vt=document.getElementById('visit-trigger');
+var vp=document.getElementById('visit-popover');
+var vcLoaded=false;
+vt.addEventListener('click',function(){
+  if(vp.style.display==='block'){vp.style.display='none';return;}
+  if(!vcLoaded){
+    fetch('https://api.countapi.xyz/hit/recwall.com/visits')
+      .then(function(r){return r.json();})
+      .then(function(d){
+        vp.textContent='visits: '+d.value;
+        vp.style.display='block';
+        vcLoaded=true;
+      }).catch(function(){vp.textContent='counter unavailable';vp.style.display='block';});
+  } else {
+    vp.style.display='block';
+  }
+});
+document.addEventListener('click',function(e){
+  if(!vt.contains(e.target))vp.style.display='none';
+});
+
 document.querySelectorAll('.hero-text .cta-btn').forEach(function(btn){
   btn.addEventListener('click',function(e){
     if(btn.getAttribute('href').includes('bandcamp'))return;
