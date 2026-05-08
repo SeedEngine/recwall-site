@@ -630,10 +630,10 @@ var vcLoaded=false;
 vt.addEventListener('click',function(){
   if(vp.style.display==='block'){vp.style.display='none';return;}
   if(!vcLoaded){
-    fetch('https://api.countapi.xyz/hit/recwall.com/visits')
+    fetch('https://api.counterapi.dev/v1/recwall-site/visits/up')
       .then(function(r){return r.json();})
       .then(function(d){
-        vp.textContent='visits: '+d.value;
+        vp.textContent='visits: '+d.count;
         vp.style.display='block';
         vcLoaded=true;
       }).catch(function(){vp.textContent='counter unavailable';vp.style.display='block';});
