@@ -131,8 +131,10 @@ footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify
   nav{padding:16px 24px;}
   .nav-links{gap:20px;}
   .hero{grid-template-columns:1fr;}
-  .hero-img{height:340px;padding:12px 12px 0 12px;}
-  .hero-text{padding:40px 24px;}
+  .hero-img{height:auto;padding:24px 10% 0;overflow:visible;}
+  .hero-img img{max-width:100%;height:auto;margin:0 auto;}
+  .hero-text{padding:40px 24px;text-align:center;align-items:center;}
+  .hero-text > div:last-child{align-items:center !important;}
   .hero-title{font-size:56px;}
   .section-inner{padding:48px 24px;}
   .disc-grid{grid-template-columns:repeat(3,1fr);}
