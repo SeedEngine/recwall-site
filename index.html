@@ -666,11 +666,10 @@ var vcLoaded=false;
 vt.addEventListener('click',function(){
   if(vp.style.display==='block'){vp.style.display='none';return;}
   if(!vcLoaded){
-    fetch('https://api.counterapi.dev/v1/recwall-site/visits/up')
+    fetch('/api/visits')
       .then(function(r){return r.json();})
       .then(function(d){
-        var count=d.count!==undefined?d.count:(d.value!==undefined?d.value:(d.data&&d.data.count!==undefined?d.data.count:'?'));
-        vp.textContent='visits: '+count;
+        vp.textContent='visits: '+(d.count!==undefined?d.count:'—');
         vp.style.display='block';
         vcLoaded=true;
       }).catch(function(){vp.textContent='counter unavailable';vp.style.display='block';});
